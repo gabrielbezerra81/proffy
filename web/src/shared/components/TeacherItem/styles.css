@@ -78,6 +78,7 @@
 
 .teacher-item footer button img {
   width: 2rem;
+  height: 2rem;
 }
 
 @media (min-width: 700px) {
