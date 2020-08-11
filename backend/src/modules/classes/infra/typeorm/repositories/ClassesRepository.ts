@@ -25,13 +25,25 @@ export default class ClassesRepository implements IClassesRepository {
     subject,
     time,
   }: IFindByDaySubjectAndTimeDTO): Promise<Class[]> {
-    const classes = await this.ormRepository
+    let classes;
+
+    // classes = await this.ormRepository.find({
+    //   join: {
+    //     alias: "class",
+    //     innerJoinAndSelect: {
+    //       user: "class.user",
+    //     },
+    //   },
+    // });
+
+    classes = await this.ormRepository
       .createQueryBuilder("class")
-      .innerJoinAndSelect("class.classes_schedules", "schedule")
+      .innerJoin("class.classes_schedules", "schedule")
       .where("class.subject = :subject")
       .andWhere("schedule.week_day IN (:...week_day)")
       .andWhere("schedule.from <= :time")
       .andWhere("schedule.to > :time")
+      .innerJoinAndSelect("class.user", "user")
       .setParameters({ week_day: [week_day], subject, time })
       .getMany();
 

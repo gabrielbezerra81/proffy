@@ -21,7 +21,10 @@ export default class Class {
   cost: number;
 
   // Inserir relacionamento
-  @ManyToOne(() => User, (user) => user.classes, { cascade: true, eager: true })
+  @ManyToOne(() => User, (user) => user.classes, {
+    cascade: true,
+    eager: false,
+  })
   @JoinColumn({ name: "user_id", referencedColumnName: "id" })
   user: User;
 
