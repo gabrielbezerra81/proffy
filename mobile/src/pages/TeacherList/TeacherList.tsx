@@ -2,7 +2,6 @@ import React, { useState, useCallback, useEffect } from "react";
 import { View, Text, TextInput, ScrollView } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-community/async-storage";
-import Picker from "react-native-picker-select";
 
 import styles from "./styles";
 import PageHeader from "../../shared/components/PageHeader/PageHeader";
@@ -12,10 +11,11 @@ import TeacherItem, {
 import { BorderlessButton, RectButton } from "react-native-gesture-handler";
 import api from "../../services/api";
 import { useFocusEffect } from "@react-navigation/native";
+import InputSelect from "../../shared/components/InputSelect/InputSelect";
 
 const TeacherList = () => {
   const [subject, setSubject] = useState("Artes");
-  const [week_day, setWeekDay] = useState("3");
+  const [week_day, setWeekDay] = useState("");
   const [time, setTime] = useState("12:00");
 
   const [classes, setClasses] = useState<Teacher[]>([]);
@@ -85,20 +85,11 @@ const TeacherList = () => {
             <View style={styles.inputGroup}>
               <View style={styles.inputBlock}>
                 <Text style={styles.label}>Dia da semana</Text>
-                <Picker
+                <InputSelect
+                  placeholder="Qual o dia?"
                   value={week_day}
-                  style={{
-                    inputIOS: styles.input,
-                    inputAndroid: { ...styles.input, color: "#000" },
-                  }}
-                  placeholder={{
-                    label: "Qual o dia?",
-                    color: "#c1bccc",
-                    value: "",
-                  }}
-                  doneText="Ok"
-                  onValueChange={setWeekDay}
-                  items={[
+                  onChange={setWeekDay}
+                  options={[
                     { label: "Domingo", value: "0" },
                     { label: "Segunda-feira", value: "1" },
                     { label: "Terça-feira", value: "2" },
@@ -107,7 +98,6 @@ const TeacherList = () => {
                     { label: "Sexta-feira", value: "5" },
                     { label: "Sábado", value: "6" },
                   ]}
-                  useNativeAndroidPickerStyle={false}
                 />
               </View>
 
