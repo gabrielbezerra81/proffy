@@ -2,7 +2,6 @@ import "react-native-gesture-handler";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect } from "react";
 import StackRouter from "./src/routes/StackRouter";
-import { AppLoading } from "expo";
 import {
   Archivo_400Regular,
   Archivo_700Bold,
@@ -13,11 +12,9 @@ import {
   Poppins_600SemiBold,
 } from "@expo-google-fonts/poppins";
 
-import {
-  preventAutoHideAsync,
-  hideAsync,
-  preventAutoHide,
-} from "expo-splash-screen";
+import * as SplashScreen from "expo-splash-screen";
+
+SplashScreen.preventAutoHideAsync().catch(console.warn);
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -26,6 +23,12 @@ export default function App() {
     Poppins_400Regular,
     Poppins_600SemiBold,
   });
+
+  useEffect(() => {
+    if (fontsLoaded) {
+      SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
 
   if (!fontsLoaded) {
     return null;
